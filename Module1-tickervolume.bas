@@ -3,6 +3,10 @@ Sub tickervolumes()
 'Define Variable for Tickers
 Dim TickerName As String
 
+' OPen price found needs to be for next ticker
+Dim OpenPrice As Double
+Dim ClosePrice As Variant
+
 ' Set initial variable for holding the total per ticker
 Dim TotalVolume As Variant
 TotalVolume = 0
@@ -23,7 +27,13 @@ If Cells(i + 1, 1).Value <> Cells(i, 1).Value Then
     ' Add to total volume
     TotalVolume = TotalVolume + Cells(i, 7).Value
     
-    ' Print ticker value in summary table
+    ' Find close price from each ticker
+    ClosePrice = Cells(i, 6).Value
+    
+    ' Range for closed price analysis
+    Range("O" & SummaryTable).Value = ClosePrice
+    
+   ' Print ticker value in summary table
     Range("I" & SummaryTable).Value = TickerName
     
     ' Print total volume in summary table
@@ -37,10 +47,18 @@ If Cells(i + 1, 1).Value <> Cells(i, 1).Value Then
 
 'If the immediate row is the same value then..
 Else
+    
     ' Add to the Volume total
     TotalVolume = TotalVolume + Cells(i, 7).Value
-    End If
     
+    ' Find open value for each ticker
+    OpenPrice = Cells(i, 3).Value
+    
+    ' Open price range printed for analysis
+    Range("N" & SummaryTable).Value = OpenPrice
+   End If
+
+
     Next i
 
 End Sub
