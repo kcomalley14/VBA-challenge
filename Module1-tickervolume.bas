@@ -18,29 +18,25 @@ SummaryTable = 2
 ' Loop through all the tickers
     For i = 2 To Cells(Rows.Count, 1).End(xlUp).Row
     
-    If Cells(2, 3).Value = 41.81 Then
-        Range("N2").Value = Cells(2, 3).Value
-        End If
-        
+If Cells(i - 1, 1).Value <> Cells(i, 1).Value Then
+    ' Find open value for each ticker
+    OpenPrice = Cells(i, 3).Value
+    
+    ' Open price range printed for analysis
+    Range("N" & SummaryTable).Value = OpenPrice
+    End If
+    
 ' Check if we are still within the same ticker value
 If Cells(i + 1, 1).Value <> Cells(i, 1).Value Then
-
+    
     ' Set the ticker name
     TickerName = Cells(i, 1).Value
     
     ' Add to total volume
     TotalVolume = TotalVolume + Cells(i, 7).Value
     
-    ' Find open value for each ticker
-    OpenPrice = Cells(i, 3).Value
-    
     ' Range for closed price analysis
     Range("O" & SummaryTable).Value = ClosePrice
-    
-    
-    
-    ' Open price range printed for analysis
-    Range("N" & SummaryTable).Value = OpenPrice
     
    ' Print ticker value in summary table
     Range("I" & SummaryTable).Value = TickerName
@@ -63,10 +59,55 @@ Else
     ' Find close price from each ticker
     ClosePrice = Cells(i + 1, 6).Value
        
-     
    End If
+  
+    Next i
 
+    Cells(1, 9).Value = "Ticker"
+    Cells(1, 10).Value = "Yearly Change"
+    Cells(1, 11).Value = "Percent Change"
+    Cells(1, 12).Value = "Total Stock Volume"
+    Cells(i, 14).Value = "Open Price"
+    Cells(i, 15).Value = "Close Price"
+
+End Sub
+
+Sub stockchanges()
+
+
+    Dim percentchange As Double
+
+    Dim openingstock As Variant
+    Dim closingstock As Variant
+    Dim YearlyChange As Variant
     
+    For i = 2 To Cells(Rows.Count, 1).End(xlUp).Row
+    
+    
+    openingstock = Cells(i, 14).Value
+    closingstock = Cells(i, 15).Value
+    
+    YearlyChange = closingstock - openingstock
+    Cells(i, 10).Value = YearlyChange
+    
+    percentchange = ((Cells(i, 10).Value / Cells(i, 14).Value) * 100)
+    
+    Cells(i, 11).Value = percentchange
+    Next i
+End Sub
+
+    Sub conditionals()
+    
+    For i = 2 To Cells(Rows.Count, 1).End(xlUp).Row
+    
+    If Cells(i, 10).Value < 0 Then
+        Cells(i, 10).Interior.ColorIndex = 3
+    
+    Else
+        Cells(i, 10).Interior.ColorIndex = 4
+    End If
     Next i
     
+
 End Sub
+
