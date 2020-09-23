@@ -12,12 +12,16 @@ Dim TotalVolume As Variant
 TotalVolume = 0
 
 'Keep track of the locations for each ticker in summary
-Dim SummaryTable As Integer
+Dim SummaryTable As Variant
 SummaryTable = 2
 
 ' Loop through all the tickers
     For i = 2 To Cells(Rows.Count, 1).End(xlUp).Row
-
+    
+    If Cells(2, 3).Value = 41.81 Then
+        Range("N2").Value = Cells(2, 3).Value
+        End If
+        
 ' Check if we are still within the same ticker value
 If Cells(i + 1, 1).Value <> Cells(i, 1).Value Then
 
@@ -27,11 +31,16 @@ If Cells(i + 1, 1).Value <> Cells(i, 1).Value Then
     ' Add to total volume
     TotalVolume = TotalVolume + Cells(i, 7).Value
     
-    ' Find close price from each ticker
-    ClosePrice = Cells(i, 6).Value
+    ' Find open value for each ticker
+    OpenPrice = Cells(i, 3).Value
     
     ' Range for closed price analysis
     Range("O" & SummaryTable).Value = ClosePrice
+    
+    
+    
+    ' Open price range printed for analysis
+    Range("N" & SummaryTable).Value = OpenPrice
     
    ' Print ticker value in summary table
     Range("I" & SummaryTable).Value = TickerName
@@ -51,14 +60,13 @@ Else
     ' Add to the Volume total
     TotalVolume = TotalVolume + Cells(i, 7).Value
     
-    ' Find open value for each ticker
-    OpenPrice = Cells(i, 3).Value
-    
-    ' Open price range printed for analysis
-    Range("N" & SummaryTable).Value = OpenPrice
+    ' Find close price from each ticker
+    ClosePrice = Cells(i + 1, 6).Value
+       
+     
    End If
 
-
+    
     Next i
-
+    
 End Sub
